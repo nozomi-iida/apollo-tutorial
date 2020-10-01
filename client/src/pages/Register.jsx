@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import { gql, useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { useForm } from '../util/hooks';
+import { AuthContext } from '../context/auth';
 
 export default () => {
   const history = useHistory();
+  const context = useContext(AuthContext);
   const [errors, setErrors] = useState('');
 
   const { onChange, onSubmit, values } = useForm(registerUser, {
@@ -16,7 +18,8 @@ export default () => {
   });
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
-    update(_, result) {
+    update(_, { data: { register: userData } }) {
+      context.login(userData);
       history.push('/');
     },
     onError(err) {
@@ -28,7 +31,7 @@ export default () => {
   function registerUser() {
     addUser();
   }
- 
+
   return (
     <div className='form-container'>
       <Form onSubmit={onSubmit} className={loading ? 'loading' : ''}>
