@@ -8,6 +8,7 @@ import MenuBar from './components/MenuBar';
 import './App.css';
 import { AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
+import SinglePost from './pages/SinglePost';
 
 export default () => {
   return (
@@ -18,6 +19,7 @@ export default () => {
           <Route exact path='/' component={Home} />
           <AuthRoute path='/login' component={Login} />
           <AuthRoute path='/register' component={Register} />
+          <Route path='/post/:postId' component={SinglePost} />
         </Container>
       </BrowserRouter>
     </AuthProvider>
